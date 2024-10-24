@@ -1,0 +1,42 @@
+version: '3.8'
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  app:
+    build: .
+    ports:
+      - "9120:9120"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3307/testing
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - db
+      - migrate
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: testing
+      MYSQL_USER: user  # Имя пользователя
+      MYSQL_PASSWORD: 1488  # Пароль
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3307:3306"
+    networks:
+      - app-network
+
+  migrate:
+    image: liquibase/liquibase
+    entrypoint: [ "sh", "-c", "liquibase --url=jdbc:mysql://db:3306?useSSL=false/testing --username=user --password=1488 --changeLogFile=/db/changelog/db.changelog-master.yaml update" ]
+    depends_on:
+      - db
+    volumes:
+      - ./src/main/resources/db/changelog:/db/changelog
+    networks:
+      - app-network
