@@ -17,8 +17,8 @@ http://localhost:9120/user/me-token
 http://localhost:9120/admin/me-token
 /me-проверка на роли и прочее
 http://localhost:9120/admin/addProject?user_name=guest&project_name=project3&project_desc=desc&time=20-добавление проекта по юзернейму,нужен токен админа(проверка на роль есть)
-http://localhost:9120/user/updatetime?project_name=project&time=2-трекние времени(нужен токен юзера)
-http://localhost:9120/admin/addUser-добваление юзера нужен body и токне админа
+http://localhost:9120/user/updatetime?project_name=project&time=2 -трекание времени(нужен токен юзера)
+http://localhost:9120/admin/addUser -добваление юзера нужен body и токне админа
 {
     "name": "admin2",
     "password": "admin2"
